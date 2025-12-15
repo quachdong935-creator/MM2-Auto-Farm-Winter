@@ -1,4 +1,4 @@
--- MM2 WINTER COIN FARM - (STABLE)
+-- MM2 WINTER COIN FARM - FINAL CLEAN (STABLE)
 -- WalkSpeed 16–30 | Nearest Coin | Smooth Tween | Hide/Show | Anti-kick Button
 
 -- ===== SERVICES =====
@@ -43,7 +43,7 @@ Instance.new("UICorner", frame).CornerRadius = UDim.new(0,8)
 -- ===== TITLE =====
 local title = Instance.new("TextLabel", frame)
 title.Size = UDim2.new(1,0,0,36)
-title.Position = UDim2.new(0,0,0,20)
+title.Position = UDim2.new(0,-5,0,15)
 title.BackgroundTransparency = 1
 title.Text = "🎄 MM2 Winter Coin Farm"
 title.Font = Enum.Font.GothamSemibold
@@ -217,7 +217,7 @@ local function tweenToCoin(coin)
 
 	local dist = (hrp.Position - coin.Position).Magnitude
 	local speed = math.clamp(walkSpeed * 0.75, 12, 22)
-	local time = math.clamp(dist / speed, 0.18, 2.3)
+	local time = math.clamp(dist / speed, 0.18, 2)
 
 	if currentTween then currentTween:Cancel() end
 	currentTween = TweenService:Create(
