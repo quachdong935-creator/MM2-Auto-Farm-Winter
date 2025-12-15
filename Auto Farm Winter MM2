@@ -1,0 +1,258 @@
+-- MM2 WINTER COIN FARM - (STABLE)
+-- WalkSpeed 16–30 | Nearest Coin | Smooth Tween | Hide/Show | Anti-kick Button
+
+-- ===== SERVICES =====
+local Players = game:GetService("Players")
+local TweenService = game:GetService("TweenService")
+local CoreGui = game:GetService("CoreGui")
+local UIS = game:GetService("UserInputService")
+local RunService = game:GetService("RunService")
+
+local player = Players.LocalPlayer
+
+-- ===== CHARACTER =====
+local char, hrp, humanoid
+local function loadChar(c)
+	char = c
+	humanoid = char:WaitForChild("Humanoid")
+	hrp = char:WaitForChild("HumanoidRootPart")
+end
+loadChar(player.Character or player.CharacterAdded:Wait())
+player.CharacterAdded:Connect(loadChar)
+
+-- ===== RESET GUI =====
+if CoreGui:FindFirstChild("MM2_WINTER_FINAL") then
+	CoreGui.MM2_WINTER_FINAL:Destroy()
+end
+
+-- ===== GUI ROOT =====
+local gui = Instance.new("ScreenGui", CoreGui)
+gui.Name = "MM2_WINTER_FINAL"
+gui.ResetOnSpawn = false
+
+-- ===== MAIN FRAME =====
+local frame = Instance.new("Frame", gui)
+frame.Size = UDim2.new(0,270,0,215)
+frame.Position = UDim2.new(0,25,0.4,0)
+frame.BackgroundColor3 = Color3.fromRGB(22,22,22)
+frame.BorderSizePixel = 0
+frame.Active = true
+frame.Draggable = true
+Instance.new("UICorner", frame).CornerRadius = UDim.new(0,8)
+
+-- ===== TITLE =====
+local title = Instance.new("TextLabel", frame)
+title.Size = UDim2.new(1,0,0,36)
+title.Position = UDim2.new(0,0,0,20)
+title.BackgroundTransparency = 1
+title.Text = "🎄 MM2 Winter Coin Farm"
+title.Font = Enum.Font.GothamSemibold
+title.TextSize = 15
+title.TextColor3 = Color3.new(1,1,1)
+title.TextXAlignment = Enum.TextXAlignment.Center
+
+-- ===== CLOSE =====
+local close = Instance.new("TextButton", frame)
+close.Size = UDim2.new(0,26,0,26)
+close.Position = UDim2.new(1,-30,0,6)
+close.Text = "X"
+close.Font = Enum.Font.GothamBold
+close.TextSize = 14
+close.BackgroundColor3 = Color3.fromRGB(170,50,50)
+close.TextColor3 = Color3.new(1,1,1)
+Instance.new("UICorner", close).CornerRadius = UDim.new(0,6)
+
+-- ===== HIDE =====
+local hide = Instance.new("TextButton", frame)
+hide.Size = UDim2.new(0,26,0,26)
+hide.Position = UDim2.new(1,-60,0,6)
+hide.Text = "_"
+hide.Font = Enum.Font.GothamBold
+hide.TextSize = 16
+hide.BackgroundColor3 = Color3.fromRGB(60,60,60)
+hide.TextColor3 = Color3.new(1,1,1)
+Instance.new("UICorner", hide).CornerRadius = UDim.new(0,6)
+
+-- ===== SHOW BUTTON =====
+local showBtn = Instance.new("TextButton", gui)
+showBtn.Size = UDim2.new(0,36,0,36)
+showBtn.Position = UDim2.new(0,10,0.5,0)
+showBtn.Text = "🎄"
+showBtn.Font = Enum.Font.GothamBold
+showBtn.TextSize = 16
+showBtn.BackgroundColor3 = Color3.fromRGB(40,40,40)
+showBtn.TextColor3 = Color3.new(1,1,1)
+showBtn.Visible = false
+Instance.new("UICorner", showBtn).CornerRadius = UDim.new(1,0)
+
+-- ===== TOGGLE FARM =====
+local toggle = Instance.new("TextButton", frame)
+toggle.Position = UDim2.new(0.1,0,0.28,0)
+toggle.Size = UDim2.new(0.8,0,0,40)
+toggle.Text = "START FARM"
+toggle.Font = Enum.Font.GothamBold
+toggle.TextSize = 14
+toggle.BackgroundColor3 = Color3.fromRGB(0,170,0)
+toggle.TextColor3 = Color3.new(1,1,1)
+Instance.new("UICorner", toggle).CornerRadius = UDim.new(0,6)
+
+-- ===== ANTI KICK BUTTON =====
+local antiBtn = Instance.new("TextButton", frame)
+antiBtn.Position = UDim2.new(0.1,0,0.46,0)
+antiBtn.Size = UDim2.new(0.8,0,0,32)
+antiBtn.Text = "ANTI KICK: OFF"
+antiBtn.Font = Enum.Font.GothamBold
+antiBtn.TextSize = 13
+antiBtn.BackgroundColor3 = Color3.fromRGB(60,60,60)
+antiBtn.TextColor3 = Color3.new(1,1,1)
+Instance.new("UICorner", antiBtn).CornerRadius = UDim.new(0,6)
+
+-- ===== SPEED LABEL =====
+local speedLabel = Instance.new("TextLabel", frame)
+speedLabel.Position = UDim2.new(0,0,0.62,0)
+speedLabel.Size = UDim2.new(1,0,0,22)
+speedLabel.BackgroundTransparency = 1
+speedLabel.Text = "WalkSpeed: 16"
+speedLabel.Font = Enum.Font.GothamMedium
+speedLabel.TextSize = 13
+speedLabel.TextColor3 = Color3.fromRGB(220,220,220)
+speedLabel.TextXAlignment = Enum.TextXAlignment.Center
+
+-- ===== SLIDER =====
+local sliderBG = Instance.new("Frame", frame)
+sliderBG.Position = UDim2.new(0.1,0,0.78,0)
+sliderBG.Size = UDim2.new(0.8,0,0,8)
+sliderBG.BackgroundColor3 = Color3.fromRGB(60,60,60)
+sliderBG.BorderSizePixel = 0
+Instance.new("UICorner", sliderBG).CornerRadius = UDim.new(1,0)
+
+local slider = Instance.new("Frame", sliderBG)
+slider.Size = UDim2.new(0,0,1,0)
+slider.BackgroundColor3 = Color3.fromRGB(0,170,255)
+slider.BorderSizePixel = 0
+Instance.new("UICorner", slider).CornerRadius = UDim.new(1,0)
+
+-- ===== STATES =====
+local farming = false
+local antiKick = false
+local dragging = false
+local walkSpeed = 16
+local currentTween
+
+-- ===== SLIDER LOGIC =====
+sliderBG.InputBegan:Connect(function(i)
+	if i.UserInputType == Enum.UserInputType.MouseButton1 then
+		dragging = true
+		frame.Draggable = false
+	end
+end)
+
+UIS.InputEnded:Connect(function(i)
+	if i.UserInputType == Enum.UserInputType.MouseButton1 then
+		dragging = false
+		frame.Draggable = true
+	end
+end)
+
+RunService.RenderStepped:Connect(function()
+	if dragging then
+		local pos = math.clamp(
+			(UIS:GetMouseLocation().X - sliderBG.AbsolutePosition.X) / sliderBG.AbsoluteSize.X,
+			0, 1
+		)
+		slider.Size = UDim2.new(pos,0,1,0)
+		walkSpeed = math.floor(16 + pos * 14)
+		speedLabel.Text = "WalkSpeed: "..walkSpeed
+	end
+end)
+
+-- ===== BUTTONS =====
+toggle.MouseButton1Click:Connect(function()
+	farming = not farming
+	toggle.Text = farming and "STOP FARM" or "START FARM"
+	toggle.BackgroundColor3 = farming and Color3.fromRGB(170,0,0) or Color3.fromRGB(0,170,0)
+	if not farming and currentTween then currentTween:Cancel() end
+end)
+
+antiBtn.MouseButton1Click:Connect(function()
+	antiKick = not antiKick
+	antiBtn.Text = "ANTI KICK: "..(antiKick and "ON" or "OFF")
+end)
+
+hide.MouseButton1Click:Connect(function()
+	frame.Visible = false
+	showBtn.Visible = true
+end)
+
+showBtn.MouseButton1Click:Connect(function()
+	frame.Visible = true
+	showBtn.Visible = false
+end)
+
+close.MouseButton1Click:Connect(function()
+	farming = false
+	if currentTween then currentTween:Cancel() end
+	gui:Destroy()
+end)
+
+-- ===== COIN FIND =====
+local function getNearestCoin()
+	local closest, dist = nil, math.huge
+	for _, v in pairs(workspace:GetDescendants()) do
+		if v:IsA("BasePart") and v:FindFirstChild("TouchInterest") and v.Name:lower():find("coin") then
+			local d = (hrp.Position - v.Position).Magnitude
+			if d < dist then
+				dist = d
+				closest = v
+			end
+		end
+	end
+	return closest
+end
+
+-- ===== TWEEN =====
+local function tweenToCoin(coin)
+	if not coin or not coin.Parent then return end
+	humanoid.WalkSpeed = walkSpeed
+
+	local dist = (hrp.Position - coin.Position).Magnitude
+	local speed = math.clamp(walkSpeed * 0.75, 12, 22)
+	local time = math.clamp(dist / speed, 0.18, 2.3)
+
+	if currentTween then currentTween:Cancel() end
+	currentTween = TweenService:Create(
+		hrp,
+		TweenInfo.new(time, Enum.EasingStyle.Linear),
+		{CFrame = CFrame.new(coin.Position + Vector3.new(0,1.5,0))}
+	)
+
+	currentTween:Play()
+
+	repeat task.wait()
+	until not coin:FindFirstChild("TouchInterest")
+		or not farming
+		or humanoid.Health <= 0
+
+	currentTween:Cancel()
+end
+
+-- ===== FARM LOOP =====
+task.spawn(function()
+	while task.wait(0.25) do
+		if farming and humanoid and humanoid.Health > 0 then
+			local coin = getNearestCoin()
+			if coin then
+				tweenToCoin(coin)
+			end
+		end
+	end
+end)
+
+-- ===== ANTI KICK LOOP =====
+task.spawn(function()
+	while task.wait(15) do
+		if antiKick and humanoid and humanoid.Health > 0 then
+			humanoid:Move(Vector3.new(0.05,0,0), true)
+		end
+	end
+end)
